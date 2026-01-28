@@ -97,7 +97,70 @@ GRID.HTML Opdracht 1
 
 <footer class="footer">
     <p>&copy; 2026 Grid opdracht</p>
+
 </footer>
 
 </body>
 </html>
+
+
+FORMULIER.HTML - Opdracht Fetch formulier
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokémon Fetch</title>
+</head>
+<body>
+
+    <h2>Zoek een Pokémon</h2>
+
+    <input
+        type="text"
+        id="pokemonName"
+        placeholder="Bijv. pikachu"
+    >
+
+    <button onclick="fetchData()">Zoek Pokémon</button>
+
+    <br><br>
+
+    <img
+        id="pokemonSprite"
+        alt="Pokemon sprite"
+        style="display: none;"
+    >
+
+    <script src="poke.js"></script>
+</body>
+</html>
+
+POKE.JS - Opdracht Fetch Formulier
+async function fetchData() {
+    try {
+        const pokemonName = document
+            .getElementById("pokemonName")
+            .value
+            .toLowerCase();
+
+        const response = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Could not fetch resource");
+        }
+
+        const data = await response.json();
+
+        const pokemonSprite = data.sprites.front_default;
+        const imgElement = document.getElementById("pokemonSprite");
+
+        imgElement.src = pokemonSprite;
+        imgElement.style.display = "block";
+
+    } catch (error) {
+        console.error(error);
+        alert("Pokémon niet gevonden");
+    }
+}
